@@ -1,0 +1,235 @@
+<div class="centar">
+  <div class="centrar-child">
+    <table style="border-collapse: separate; border-spacing: 1pc;">
+      <tbody>
+        <tr>
+          <td>
+            <h1>Mesero: </h1>
+          </td>
+          <td>
+            <select (input)="meseroChange($event)" name="" id="">
+              <option [value]="mesero.idMesero" *ngFor="let mesero of listaMeseros">{{mesero.nombre}}{{mesero.apellido}}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="content">
+  <table style="width: 100%;">
+    <tbody>
+      <tr>
+        <td style="width: 50%; text-align: left;">
+          <h4>
+            <p *ngFor="let secuencia of listaSecuencia">
+              <strong>ID Comanda</strong>| {{secuencia.Secuencia}}
+            </p>
+          </h4>
+        </td>
+        <td style="width: 50%; text-align: right;">
+          <h4>
+            <strong>Fecha: </strong> {{currentDate | date:'yyyy-MM-dd | hh:mm'}}
+          </h4>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- CONTENIDO ALIMENTOS -->
+  <h2>
+    Platillos
+  </h2>
+
+  <div class="contenedor">
+    <div class="tarjeta" *ngFor="let platillo of listaPlatillos">
+      <h2 class="titulo">{{platillo.Nombre}}</h2>
+      <div class="cuerpo">
+        <img src="../assets/img/img1.jpg" alt="muestra">
+        <br>
+        <strong>Detalle:</strong>
+        <br>
+        <p>{{platillo.Descripcion}}</p>
+        <strong>Costo: </strong>${{platillo.Costo}}
+        <br>
+        <br>
+        <label for="">Cantidad</label>
+        <input (input)="changeCantidadPlatillo($event,platillo.idPlatillo)" type="number" name="cantidad"
+          class="cantidad">
+      </div>
+    </div>
+  </div>
+  <h2>
+    Bebidas
+  </h2>
+  <div class="contenedor">
+    <div class="tarjeta" *ngFor="let bebida of listaBebidas">
+      <h2 class="titulo">{{bebida.Nombre}}</h2>
+      <div class="cuerpo">
+        <img src="../assets/img/img2.jpeg" alt="muestra">
+        <br>
+        <strong>Detalle:</strong>
+        <br>
+        <p>{{bebida.Descripcion}}</p>
+        <strong>Costo: </strong>${{bebida.Costo}}
+        <br>
+        <br>
+        <label for="">Cantidad</label>
+        <input (input)="changeCantidadBebida($event,bebida.idBebida)" type="number" name="cantidad" class="cantidad">
+      </div>
+    </div>
+  </div>
+  <h2>
+    Paquetes
+  </h2>
+  <div class="contenedor">
+    <div class="tarjeta" *ngFor="let paquete of listaPaquetes">
+      <h2 class="titulo">{{paquete.Nombre}}</h2>
+      <div class="cuerpo">
+        <img src="../assets/img/img3.jpg" alt="muestra">
+        <br>
+        <strong>Detalle:</strong>
+        <br>
+        <p>{{paquete.Descripcion}}</p>
+        <strong>Costo: </strong>${{paquete.Costo}}
+        <br>
+        <br>
+        <label for="">Cantidad</label>
+        <input (input)="changeCantidadPaquete($event,paquete.idPaquete)" type="number" name="cantidad" class="cantidad">
+      </div>
+    </div>
+  </div>
+  <div class="centrar">
+    <div class="centrar-child">
+      <div class="centrar-btn">
+        <button class="button-29" type="button" clickable (click)="mandarCocina()">Enviar a cocina</button>
+      </div>
+      <br>
+      <br>
+      <div class="centrar-btn" [hidden]="!btnCobro">
+        <button class="button-29" (click)="ordenTicket()">
+          Cobrar Orden
+        </button>
+      </div><!-- 
+      {{this.listaPlatillos | json}} -->
+      <br>
+      <br>
+      <br>
+      <div [hidden]="!mostrarTicket">
+        <div class="contenidoCobro">
+          <div class="backgroundBlack"></div>
+          <div class="contenidoCobroChild">
+            <button class="button-29" (click)="mostrarTicket=false">
+              Cerrar
+            </button>
+            <div class="formCobro">
+              <h2>
+                Subtotal: ${{subtotal}}
+              </h2>
+              <br>
+              <table style="width: 100%;border-collapse: separate;">
+                <tbody>
+                  <tr>
+                    <td>
+                      <h2>
+                        Forma de Pago:
+                      </h2>
+                    </td>
+                    <td>
+                      <select (input)="changePago($event)" name="" id="">
+                        <option value="VISA">VISA</option>
+                        <option value="Master Card">Master Card
+                        </option>
+                        <option value="Efectivo">Efectivo</option>
+                      </select>
+                    </td>
+                    <td>
+                      <img src="../assets/img/visa.png">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <table style="width: 50%; border-collapse: separate;">
+                <tbody>
+                  <tr>
+                    <td>
+                      <h2>
+                        Propina:
+                      </h2>
+                    </td>
+                    <td>
+                      <select (input)="calcularPropina($event)" name="" id="">
+                        <option value="0.10">10%</option>
+                        <option value="0.15">15%</option>
+                        <option value="0.20">20%</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <h2>
+                Total: {{ total | currency: 'CAD' : 'symbol-narrow' : '2.0-2' }}
+              </h2>
+              <br>
+              <div class="centrar-btn">
+                <button class="button-29" (click)="pagar()">Pagar</button>
+              </div>
+              <div *ngFor="let comandaId of comanda">
+                <br>
+                <h2>
+                  <table class="centrar-child" [hidden]="!mostrarTicketId"
+                    style="width: auto; border-collapse: separate; border-spacing: 5px;">
+                    <tbody>
+                      <tr>
+                        <td>
+                          ID:
+                        </td>
+                        <td style="text-align: right;">
+                          {{comandaId.idComanda}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Mesero que atendio:
+                        </td>
+                        <td style="text-align: right;">
+                          {{comandaId.nombre}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Forma de Pago:
+                        </td>
+                        <td style="text-align: right;">
+                          {{comandaId.formaPago}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Propina:
+                        </td>
+                        <td style="text-align: right;">
+                          {{ comandaId.propina | currency: 'CAD' : 'symbol-narrow' : '2.0-2' }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Total:
+                        </td>
+                        <td style="text-align: right;">
+                          {{ comandaId.total | currency: 'CAD' : 'symbol-narrow' : '2.0-2' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
